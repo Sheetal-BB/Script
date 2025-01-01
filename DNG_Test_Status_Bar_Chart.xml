@@ -1,1 +1,55 @@
-# Script
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+  <ModulePrefs title="Test Status Gadget" />
+  <Content type="html">
+    <![CDATA[
+      <html>
+        <head>
+          <script src="https://www.gstatic.com/charts/loader.js"></script>
+          <script>
+            google.charts.load('current', {'packages':['corechart']});
+            google.charts.setOnLoadCallback(fetchDataFromDNG);
+
+            function fetchDataFromDNG() {
+              var xhr = new XMLHttpRequest();
+              xhr.open('GET', 'https://your-dng-server/api/data', true);
+              xhr.setRequestHeader('Authorization', 'Bearer your-access-token');
+              xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                  var response = JSON.parse(xhr.responseText);
+                  var data = google.visualization.arrayToDataTable([
+                    ['Status', 'Count'],
+                    ['Passed', response.passed],
+                    ['Failed', response.failed],
+                    ['In Progress', response.inProgress]
+                  ]);
+                  drawChart(data);
+                }
+              };
+              xhr.send();
+            }
+
+            function drawChart(data) {
+              var options = {
+                title: 'Test Status',
+                chartArea: {width: '50%'},
+                hAxis: {
+                  title: 'Count',
+                  minValue: 0
+                },
+                vAxis: {
+                  title: 'Status'
+                }
+              };
+              var chart = new google.visualization.BarChart(document.getElementById('barchart'));
+              chart.draw(data, options);
+            }
+          </script>
+        </head>
+        <body>
+          <div id="barchart" style="width: 600px; height: 400px;"></div>
+        </body>
+      </html>
+    ]]>
+  </Content>
+</Module>
