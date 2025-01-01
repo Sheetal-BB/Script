@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+  <ModulePrefs title="Test Gadget" height="100">
+    <Require feature="opensocial-0.8"/>
+  </ModulePrefs>
+  <Content type="html">
+    <![CDATA[
+    <html>
+      <body>
+        <h1>Gadget Test</h1>
+      </body>
+    </html>
+    ]]>
+  </Content>
+</Module>
